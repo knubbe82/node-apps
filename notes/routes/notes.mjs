@@ -63,3 +63,9 @@ router.get('/destroy', async (req, res, next) => {
 });
 
 /* Destroy Note. */
+router.post('/destroy/confirm', async (req, res, next) => {
+    try {
+        await notes.destroy(req.body.notekey);
+        res.redirect('/');
+    } catch (err) { next(err); }
+});
