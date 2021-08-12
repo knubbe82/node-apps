@@ -1,12 +1,10 @@
-// var createError = require('http-errors');
 import { default as createError } from 'http-errors';
-// var express = require('express');
+import { InMemoryNotesStore } from './models/notes-memory.mjs';
+export const NotesStore = new InMemoryNotesStore();
 import { default as express } from 'express';
-// var path = require('path');
+import { default as hbs } from 'hbs';
 import * as path from 'path';
-// var cookieParser = require('cookie-parser');
 import { default as cookieParser } from 'cookie-parser';
-// var logger = require('morgan');
 import { default as logger } from 'morgan';
 import * as http from 'http';
 import { approotdir } from './approotdir.mjs';
@@ -22,6 +20,7 @@ export const app = express();
 // view engine setup
 app.set('views', path.join(dirname, 'views'));
 app.set('view engine', 'hbs');
+hbs.registerPartials(path.join(dirname, 'partials'));
 
 app.use(logger('dev'));
 app.use(express.json());
