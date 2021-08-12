@@ -12,8 +12,8 @@ const dirname = approotdir;
 
 import { normalizePort, onError, onListening } from './appsuport.mjs';
 
-// var indexRouter = require('./routes/index');
 import { router as indexRouter } from './routes/index.mjs';
+import { router as notesRouter } from './routes/notes.mjs';
 
 export const app = express();
 
@@ -29,6 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/notes', notesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
