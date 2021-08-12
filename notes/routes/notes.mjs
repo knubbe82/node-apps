@@ -48,4 +48,18 @@ router.get('/edit', async (req, res, next) => {
             note: note
         });
     } catch (err) { next(err); }
-})
+});
+
+/* Ask to Delete Note. */
+router.get('/destroy', async (req, res, next) => {
+    try {
+        const note = await notes.read(req.query.key);
+        res.render('notedestroy', {
+            title: note ? note.title : "",
+            notekey: req.query.key,
+            note: note
+        });
+    } catch (err) { next(err); }
+});
+
+/* Destroy Note. */
