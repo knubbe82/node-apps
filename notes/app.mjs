@@ -9,7 +9,11 @@ import { default as logger } from 'morgan';
 import { default as rfs } from 'rotating-file-stream';
 import * as http from 'http';
 import { approotdir } from './approotdir.mjs';
+import { default as DBG } from 'debug';
+
 const dirname = approotdir;
+const debug = DBG('notes:debug');
+const dbgerror = DBG('notes:error');
 
 import { normalizePort, onError, onListening } from './appsuport.mjs';
 
@@ -67,3 +71,6 @@ export const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+server.on('request', (req, res) => {
+    debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
+});
