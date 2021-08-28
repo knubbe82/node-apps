@@ -22,7 +22,7 @@ app.set('views', path.join(dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(dirname, 'partials'));
 
-app.use(logger('dev'));
+app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
