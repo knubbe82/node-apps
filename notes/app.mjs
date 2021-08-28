@@ -6,6 +6,7 @@ import { default as hbs } from 'hbs';
 import * as path from 'path';
 import { default as cookieParser } from 'cookie-parser';
 import { default as logger } from 'morgan';
+import { default as rfs } from 'rotating-file-stream';
 import * as http from 'http';
 import { approotdir } from './approotdir.mjs';
 const dirname = approotdir;
@@ -22,7 +23,15 @@ app.set('views', path.join(dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(dirname, 'partials'));
 
-app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev'));
+app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
+  stream: process.env.REQUEST_LOG_FILE ?
+      rfs.createStream(process.env.REQUEST_LOG_FILE, {
+        size: '10M',
+        interval: '1d',
+        compress: 'gzip'
+      })
+      : process.stdout
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
