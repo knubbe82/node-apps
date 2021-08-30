@@ -1,6 +1,7 @@
 import { port } from "./app.mjs";
 import { server } from "./app.mjs";
 import { default as DBG } from 'debug';
+import * as util from 'util';
 
 const debug = DBG('notes:debug');
 const dbgerror = DBG('notes:error');
@@ -65,3 +66,11 @@ export function onError(error) {
       : 'port ' + addr.port;
     debug(`Listening on ${bind}`);
   }
+
+  process.on('uncaughtException', function(err) {
+    console.error(`I've crashed!!! - ${(err.stack || err)}`);
+  });
+
+  process.on('unhandledRejection', (reason, p) => {
+    console.error(`Unhandled Rejection at: ${util.inspect(p)} reason: ${reason}`);
+  })
