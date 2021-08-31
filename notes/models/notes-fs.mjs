@@ -7,7 +7,7 @@ import { default as DBG } from 'debug';
 const debug = DBG('notes:notes-fs');
 const error = DBG('notes:error-fs');
 
-export class FSNotesStore extends AbstractNotesStore {
+export default class FSNotesStore extends AbstractNotesStore {
     async close() { }
     async update(key, title, body) {
         return crupdate(key, title, body);
@@ -74,7 +74,7 @@ async function crupdate(key, title, body) {
     }
     const note = new Note(key, title, body);
     const writeTo = filePath(notesdir, key);
-    const writeJSON = note.fromJSON;
+    const writeJSON = note.JSON;
     await fs.writeFile(writeTo, writeJSON, 'utf8');
 
     return note;
