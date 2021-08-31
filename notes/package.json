@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env DEBUG=notes:* node ./app.mjs",
     "server1": "cross-env DEBUG=notes:* PORT=3001 node ./app.mjs",
-    "server2": "cross-env DEBUG=notes:* PORT=3002 node ./app.mjs"
+    "server2": "cross-env DEBUG=notes:* PORT=3002 node ./app.mjs",
+    "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node ./app.mjs"
   },
   "dependencies": {
     "bootstrap": "^4.5.3",
@@ -14,6 +15,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "feather-icons": "^4.25.0",
+    "fs-extra": "^10.0.0",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
     "jquery": "^3.5.1",

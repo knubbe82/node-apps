@@ -1,6 +1,12 @@
 import { default as createError } from 'http-errors';
-import { InMemoryNotesStore } from './models/notes-memory.mjs';
-export const NotesStore = new InMemoryNotesStore();
+// import { InMemoryNotesStore } from './models/notes-memory.mjs';
+// export const NotesStore = new InMemoryNotesStore();
+import { useModel as useNotesModel } from './models/notes-store.mjs';
+useNotesModel(
+  process.env.NOTES_MODEL ? process.env.NOTES_MODEL : 'memory'
+)
+.then(store => { })
+.catch(error => { onError({ code: 'ENOTESSTORE', error }); });
 import { default as express } from 'express';
 import { default as hbs } from 'hbs';
 import * as path from 'path';
@@ -29,12 +35,12 @@ hbs.registerPartials(path.join(dirname, 'partials'));
 
 app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
   stream: process.env.REQUEST_LOG_FILE ?
-      rfs.createStream(process.env.REQUEST_LOG_FILE, {
-        size: '10M',
-        interval: '1d',
-        compress: 'gzip'
-      })
-      : process.stdout
+    rfs.createStream(process.env.REQUEST_LOG_FILE, {
+      size: '10M',
+      interval: '1d',
+      compress: 'gzip'
+    })
+    : process.stdout
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -49,12 +55,12 @@ app.use('/', indexRouter);
 app.use('/notes', notesRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -72,5 +78,5 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 server.on('request', (req, res) => {
-    debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
+  debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
 });
