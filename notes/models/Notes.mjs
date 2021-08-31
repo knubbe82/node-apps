@@ -23,12 +23,9 @@ export class Note {
     }
     static fromJSON(json) {
         const data = JSON.parse(json);
-        if (typeof data != 'object'
-            || !data.hasOwnPropery('key')
+        if (typeof data !== 'object'
             || typeof data.key !== 'string'
-            || !data.hasOwnPropery('title')
             || typeof data.title !== 'string'
-            || !data.hasOwnPropery('body')
             || typeof data.body !== 'string') {
             throw new Error(`Not a Note: ${json}`);
         }
